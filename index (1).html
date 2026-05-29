@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Albert Lee</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0e0d0b;
+    --paper: #f5f0e8;
+    --accent: #c4501a;
+    --muted: #7a7060;
+    --line: #d4cfc5;
+  }
+
+  body {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'DM Mono', monospace;
+    font-weight: 300;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .grain {
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 4rem 2rem 6rem;
+    flex: 1;
+  }
+
+  .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fade-up 0.6s ease forwards 0.1s;
+  }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(3rem, 8vw, 5.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fade-up 0.7s ease forwards 0.2s;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .divider {
+    width: 40px;
+    height: 1px;
+    background: var(--accent);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fade-up 0.6s ease forwards 0.35s;
+  }
+
+  .bio {
+    font-size: 15px;
+    line-height: 1.8;
+    color: #b8b0a0;
+    max-width: 480px;
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: fade-up 0.6s ease forwards 0.45s;
+  }
+
+  .bio strong {
+    color: var(--paper);
+    font-weight: 400;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 3.5rem;
+    opacity: 0;
+    animation: fade-up 0.6s ease forwards 0.55s;
+  }
+
+  .tag {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: 1px solid #333;
+    color: #888;
+    padding: 5px 12px;
+    border-radius: 2px;
+  }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fade-up 0.6s ease forwards 0.65s;
+  }
+
+  .links {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border-top: 1px solid #222;
+    opacity: 0;
+    animation: fade-up 0.6s ease forwards 0.75s;
+  }
+
+  .link-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0;
+    border-bottom: 1px solid #1e1e1e;
+    text-decoration: none;
+    color: var(--paper);
+    transition: color 0.2s;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+  }
+
+  .link-row:hover { color: var(--accent); }
+  .link-row:hover .arrow { transform: translateX(4px); }
+
+  .arrow {
+    font-size: 16px;
+    transition: transform 0.2s;
+    color: var(--muted);
+  }
+
+  .coming-soon {
+    margin-top: 4rem;
+    padding: 2rem;
+    border: 1px solid #1e1e1e;
+    border-left: 3px solid var(--accent);
+    opacity: 0;
+    animation: fade-up 0.6s ease forwards 0.9s;
+  }
+
+  .coming-soon .cs-label {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+  }
+
+  .coming-soon p {
+    font-size: 14px;
+    color: #888;
+    line-height: 1.7;
+  }
+
+  .coming-soon p strong {
+    color: var(--paper);
+    font-weight: 400;
+    font-family: 'DM Serif Display', serif;
+    font-size: 16px;
+    font-style: italic;
+  }
+
+  footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 2rem;
+    font-size: 11px;
+    color: #333;
+    letter-spacing: 0.1em;
+  }
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<main>
+  <p class="eyebrow">Albert Lee</p>
+
+  <h1>Writer.<br><em>Builder.</em><br>Human.</h1>
+
+  <div class="divider"></div>
+
+  <p class="bio">
+    Based in <strong>Southern California</strong>. By day, working at the intersection of technology and the future. By night, writing the world I can't stop thinking about &mdash; a <strong>sci-fi dystopian trilogy</strong> set 70 years from now, when the question isn't whether machines can think, but whether we ever could.
+  </p>
+
+  <div class="tags">
+    <span class="tag">Speculative Fiction</span>
+    <span class="tag">World-Builder</span>
+    <span class="tag">SoCal</span>
+    <span class="tag">Debut Novelist</span>
+  </div>
+
+  <p class="section-label">Find me</p>
+  <div class="links">
+    <a href="https://github.com/lIlIll11" target="_blank" class="link-row">
+      <span>GitHub</span>
+      <span class="arrow">&rarr;</span>
+    </a>
+    <a href="mailto:albywee@gmail.com" class="link-row">
+      <span>Email</span>
+      <span class="arrow">&rarr;</span>
+    </a>
+    <a href="https://www.instagram.com/heqoman" target="_blank" class="link-row">
+      <span>Instagram</span>
+      <span class="arrow">&rarr;</span>
+    </a>
+    <a href="https://x.com/nokeyloki" target="_blank" class="link-row">
+      <span>X</span>
+      <span class="arrow">&rarr;</span>
+    </a>
+  </div>
+
+  <div class="coming-soon">
+    <p class="cs-label">Coming Soon</p>
+    <p><strong>The Obsolete</strong> &mdash; a novel. Neo-Geneva, 2095. A woman discovers the father she mourned helped build the world she's trapped in. Updates dropping here.</p>
+  </div>
+</main>
+<footer>&copy; 2026 Albert Lee &middot; Built with intention</footer>
+</body>
+</html>
